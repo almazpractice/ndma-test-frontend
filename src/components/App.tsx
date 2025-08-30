@@ -14,8 +14,8 @@ import {
 import { AppRoot } from "@telegram-apps/telegram-ui";
 
 import { routes } from "@/navigation/routes.tsx";
-import { NavBar } from "@/components/NavBar/NavBar.tsx";
 import { VscHome, VscCalendar, VscAccount } from "react-icons/vsc";
+import { NavBar } from "./NavBar/Navbar";
 
 type Page = "home" | "profile" | "booking";
 
