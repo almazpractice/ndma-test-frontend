@@ -2,15 +2,9 @@ import React from "react";
 import { Multiselect } from "@telegram-apps/telegram-ui";
 import { Master } from "./Master";
 
-export type MultiselectOptionType = {
-  value: string;
-  label: string;
-};
-
-export const MultiselectOption: React.FC<MultiselectOptionType> = ({
-  value,
-  label,
-}) => <option value={value}>{label}</option>;
+// Local option type compatible with telegram-ui Multiselect
+// (value can be string | number; label can be ReactNode)
+type TAUOption = { value: string | number; label: React.ReactNode };
 
 export type MasterSelectProps = {
   masters: Master[];
@@ -23,11 +17,11 @@ export const MasterSelect: React.FC<MasterSelectProps> = ({
   onChange,
   selectedMasters,
 }) => {
-  const handleChange = (selected: MultiselectOptionType[]) => {
-    const selectedMasters = masters.filter((m) =>
-      selected.some((s) => s.value === m.name)
+  const handleChange = (selected: TAUOption[]) => {
+    const next = masters.filter((m) =>
+      selected.some((s) => String(s.value) === m.name)
     );
-    onChange(selectedMasters);
+    onChange(next);
   };
 
   return (
@@ -37,10 +31,6 @@ export const MasterSelect: React.FC<MasterSelectProps> = ({
         background: "#fff",
       }}
     >
-      {/* <label className="block text-gray-700 font-semibold mb-2 text-sm bg-white">
-        Select Master
-      </label> */}
-      {/* <p className="text-xs text-gray-400 mt-1">You can choose multiple</p> */}
       <Multiselect
         header="Select masters"
         placeholder="All masters"
@@ -50,15 +40,7 @@ export const MasterSelect: React.FC<MasterSelectProps> = ({
         value={selectedMasters.map((m) => ({ value: m.name, label: m.name }))}
         onChange={handleChange}
         className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#86aec0] focus:outline-none bg-white"
-      >
-        {masters.map((master, idx) => (
-          <MultiselectOption
-            key={idx}
-            value={master.name}
-            label={master.name}
-          />
-        ))}
-      </Multiselect>
+      />
     </div>
   );
 };
