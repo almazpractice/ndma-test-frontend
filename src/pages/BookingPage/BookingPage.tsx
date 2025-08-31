@@ -10,7 +10,7 @@ function startOfMonth(d: Date) {
   return new Date(d.getFullYear(), d.getMonth(), 1);
 }
 
-import { masters } from "@/navigation/routes";
+import { masters } from "@/components/common/Master";
 import { Master } from "@/components/common/Master";
 
 const timeOptions = [
@@ -28,7 +28,6 @@ const timeOptions = [
   "20:00",
   "21:00",
 ];
-const disabledTimes = new Set(["09:00", "13:00"]);
 
 export const BookingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,7 +36,7 @@ export const BookingPage: React.FC = () => {
   ]);
   const [month, setMonth] = useState<Date>(startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string>("10:00");
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
   const book = () => {
     // Placeholder action
@@ -73,15 +72,18 @@ export const BookingPage: React.FC = () => {
         {/* Calendar */}
         <MonthCalendar
           month={month}
+          masters={selectedMasters}
           setMonth={setMonth}
           selectedDate={selectedDate}
           onSelectDate={setSelectedDate}
+          setSelectedTime={setSelectedTime}
         />
 
         {/* Time Slots */}
         <TimeSlots
           options={timeOptions}
-          disabledTimes={disabledTimes}
+          masters={selectedMasters}
+          date={selectedDate}
           value={selectedTime}
           onChange={setSelectedTime}
         />
@@ -89,8 +91,11 @@ export const BookingPage: React.FC = () => {
         {/* Book Button */}
         <div className="mt-auto">
           <button
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#ef6c4d] text-white font-bold text-lg shadow-md"
-            onClick={book}
+            className={`w-full py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#ef6c4d] text-white font-bold text-lg shadow-md ${
+              !selectedTime ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={!selectedTime}
+            onClick={() => selectedTime && book()}
           >
             Book Session
           </button>

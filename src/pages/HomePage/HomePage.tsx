@@ -12,7 +12,7 @@ import {
   type User,
   useSignal,
 } from "@telegram-apps/sdk-react";
-import { masters } from "@/navigation/routes";
+import { masters } from "@/components/common/Master";
 
 function getUserName(user: User): string | undefined {
   return user.first_name ? user.first_name : user.username;
