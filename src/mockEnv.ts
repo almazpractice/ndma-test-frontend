@@ -6,19 +6,21 @@ import { mockTelegramEnv, isTMA, emitEvent } from '@telegram-apps/sdk-react';
 if (import.meta.env.DEV) {
   if (!await isTMA('complete')) {
     const themeParams = {
-      accent_text_color: "#6ab2f2",
-      bg_color: "#ffffff",
-      button_color: "#5288c1",
-      button_text_color: "#ffffff",
-      destructive_text_color: "#ec3942",
-      header_bg_color: "#17212b",
-      hint_color: "#708499",
-      link_color: "#6ab3f3",
-      secondary_bg_color: "#232e3c",
-      section_bg_color: "#17212b",
-      section_header_text_color: "#6ab3f3",
-      subtitle_text_color: "#708499",
-      text_color: "#17212b",
+      accent_text_color: "#2EA6FF",
+      bg_color: "#18222D",
+      button_color: "#2EA6FF",
+      button_text_color: "#FFFFFF",
+      button_bar_bg_color: "#213040",
+      destructive_text_color: "#EF5B5B",
+      header_bg_color: "#131415",
+      hint_color: "#B1C3D5",
+      link_color: "#62BCF9",
+      secondary_bg_color: "#131415",
+      section_bg_color: "#18222D",
+      section_separator_color: "#213040",
+      section_header_text_color: "#B1C3D5",
+      subtitle_text_color: "#B1C3D5",
+      text_color: "#FFFFFF",
     } as const;
     const noInsets = { left: 0, top: 0, bottom: 0, right: 0 } as const;
 

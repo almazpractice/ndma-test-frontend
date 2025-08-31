@@ -9,5 +9,9 @@ body {
 }
 
 .pagesHeightFix {
-  height: calc(100vh - 86px);
+  /* let content go under navbar but keep it visible via padding */
+  min-height: 100vh;
+  padding-bottom: calc(var(--navbar-h, 0px) + 10px + env(safe-area-inset-bottom, 0px));
+  /* scrolling handled by the page containers */
+  overflow: auto;
 }

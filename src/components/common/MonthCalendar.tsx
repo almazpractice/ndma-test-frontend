@@ -17,7 +17,7 @@ function mondayIndex(jsDay: number) {
   return (jsDay + 6) % 7;
 }
 
-type DayCell = { date: Date; inMonth: boolean };
+type DayCell = { date: Date; inMonth: boolean; notPast: boolean };
 
 function buildCalendarGrid(currentMonth: Date): DayCell[] {
   const first = startOfMonth(currentMonth);
@@ -29,7 +29,14 @@ function buildCalendarGrid(currentMonth: Date): DayCell[] {
   for (let i = 0; i < 42; i++) {
     const d = new Date(start);
     d.setDate(start.getDate() + i);
-    grid.push({ date: d, inMonth: d.getMonth() === currentMonth.getMonth() });
+    grid.push({
+      date: d,
+      inMonth: d.getMonth() === currentMonth.getMonth(),
+      notPast:
+        d.getDate() >= new Date().getDate() ||
+        d.getMonth() > new Date().getMonth() ||
+        d.getFullYear() > new Date().getFullYear(),
+    });
   }
   return grid;
 }
@@ -82,14 +89,21 @@ export const MonthCalendar: React.FC<MonthCalendarProps> = ({
             cell.date.toDateString() === selectedDate.toDateString();
           const base = "rounded-lg";
           const inMonthCls = cell.inMonth ? "" : " text-gray-300";
+          const isPastCls = cell.notPast
+            ? ""
+            : " text-gray-300 cursor-not-allowed";
           const selectedCls = isSelected
-            ? " bg-[#ff7e5f] text-white font-semibold rounded-full"
+            ? " bg-[#ff7e5f] text-white font-semibold"
+            : new Date().toDateString() === cell.date.toDateString()
+            ? " bg-gray-200 font-semibold"
             : "";
           return (
             <button
               key={key}
-              className={base + inMonthCls + selectedCls}
-              onClick={() => cell.inMonth && onSelectDate(cell.date)}
+              className={base + inMonthCls + selectedCls + isPastCls}
+              onClick={() =>
+                cell.inMonth && cell.notPast && onSelectDate(cell.date)
+              }
             >
               {cell.date.getDate()}
             </button>
